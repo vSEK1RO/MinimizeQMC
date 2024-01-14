@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 
 const props = defineProps({
-  "updateItems": Function
+  "updateItems": Function,
 })
 
 const funMaxLen = 8
@@ -66,9 +66,10 @@ function clearChoseItems(){
         label="Выберите тип задания функции"
         :items="items"
         v-model="chose"
+        @update:model-value="clearChoseItems"
     ></v-select>
+    <h3 class="text-mono">Выберите количество переменных</h3>
     <v-slider
-        label="Выберите количество переменных"
         :ticks="tickLabels"
         :max="funMaxLen"
         min="2"

@@ -22,17 +22,15 @@ const funDNF = computed(() => {
     if(props.chose==='Σ()' || props.chose==='Σ() + X()'){
       if(props.funItems.includes(i)){
         fun.push(toBin4(i)+'+')
-      }
-      if(props.xfunItems.includes(i) && !props.funItems.includes(i)){
+      }else if(props.xfunItems.includes(i)){
         fun.push(toBin4(i)+'-')
       }
     }
     if(props.chose==='Π()' || props.chose==='Π() + X()'){
-      if(!props.funItems.includes(i)){
-        fun.push(toBin4(i)+'+')
-      }
-      if(props.xfunItems.includes(i) && props.funItems.includes(i)){
+      if(props.xfunItems.includes(i)){
         fun.push(toBin4(i)+'-')
+      }else if(!props.funItems.includes(i)){
+        fun.push(toBin4(i)+'+')
       }
     }
   }
@@ -42,18 +40,16 @@ const funKNF = computed(() => {
   let fun = []
   for(let i=0;i<2**props.funLen;i++){
     if(props.chose==='Σ()' || props.chose==='Σ() + X()'){
-      if(!props.funItems.includes(i)){
-        fun.push(toBin4(i)+'+')
-      }
-      if(props.xfunItems.includes(i) && props.funItems.includes(i)){
+      if(props.xfunItems.includes(i)){
         fun.push(toBin4(i)+'-')
+      }else if(!props.funItems.includes(i)){
+        fun.push(toBin4(i)+'+')
       }
     }
     if(props.chose==='Π()' || props.chose==='Π() + X()'){
       if(props.funItems.includes(i)){
         fun.push(toBin4(i)+'+')
-      }
-      if(props.xfunItems.includes(i) && !props.funItems.includes(i)){
+      }else if(props.xfunItems.includes(i)){
         fun.push(toBin4(i)+'-')
       }
     }
@@ -61,7 +57,8 @@ const funKNF = computed(() => {
   return fun
 })
 
-const funMDNF = computed(() => {
+const funMDNF = ref([])
+function updateMDNF() {
   let fun = funDNF.value
   if(fun.length===2**props.funLen){
     let str=''
@@ -69,16 +66,21 @@ const funMDNF = computed(() => {
       str+='*'
     }
     str+='+'
-    return [str]
+    funMDNF.value=[str]
+    return
   }
-  for(let i=0;i<1;i++){
+  for(let i=0;i<props.funLen;i++){
     fun = rangeNF(fun,'DNF')
     fun = mergeAll(fun)
+    if(!mergibleAll(fun)){
+      break;
+    }
   }
-  return fun
-})
+  funMDNF.value=fun
+}
 
-const funMKNF = computed(() => {
+const funMKNF = ref([])
+function updateMKNF() {
   let fun = funKNF.value
   if(fun.length===2**props.funLen){
     let str=''
@@ -86,14 +88,23 @@ const funMKNF = computed(() => {
       str+='*'
     }
     str+='+'
-    return [str]
+    funMKNF.value=[str]
+    return
   }
   for(let i=0;i<props.funLen;i++){
     fun = rangeNF(fun,'KNF')
     fun = mergeAll(fun)
+    if(!mergibleAll(fun)){
+      break;
+    }
   }
-  return fun
-})
+  funMKNF.value=fun
+}
+
+function updateFuns(){
+  updateMDNF()
+  updateMKNF()
+}
 
 function rangeNF(funList, type) {
   let fun = []
@@ -122,30 +133,14 @@ function mergeAll(funRangedList){
         if(mergible(
             funRangedList[i][j],
             funRangedList[i+1][k],
-        ) && funRangedList[i][j].endsWith('+')
-        && funRangedList[i+1][k].endsWith('+')){
-          fun.push(merge(
+        )){
+          let buffStr = merge(
               funRangedList[i][j],
               funRangedList[i+1][k],
-          ))
-          frl[i][j] = 1
-          frl[i+1][k] = 1
-        }
-      }
-    }
-  }
-  for(let i=0;i<props.funLen;i++){
-    for(let j=0;j<funRangedList[i].length;j++){
-      for(let k=0;k<funRangedList[i+1].length;k++){
-        if(mergible(
-            funRangedList[i][j],
-            funRangedList[i+1][k],
-        ) && (funRangedList[i][j].endsWith('+') && funRangedList[i+1][k].endsWith('-') && frl[i][j]===0
-        || funRangedList[i][j].endsWith('-') && funRangedList[i+1][k].endsWith('+') && frl[i+1][k]===0)){
-          fun.push(merge(
-              funRangedList[i][j],
-              funRangedList[i+1][k],
-          ))
+          )
+          if(!fun.includes(buffStr)){
+            fun.push(buffStr)
+          }
           frl[i][j] = 1
           frl[i+1][k] = 1
         }
@@ -154,17 +149,17 @@ function mergeAll(funRangedList){
   }
   for(let i=0;i<=props.funLen;i++){
     for(let j=0;j<funRangedList[i].length;j++){
-      if(frl[i][j]==0){
+      if(frl[i][j]===0){
         fun.push(funRangedList[i][j])
       }
     }
   }
-  return toSet(fun)
+  return fun
 }
 
 function merge(str1,str2){
   let xflag=false
-  if(str1[str1.length-1]==='-'||str2[str2.length-1]==='-'){
+  if(str1.endsWith('-')||str2.endsWith('-')){
     xflag=true
   }
   str1=str1.substring(0,str1.length-1)
@@ -227,16 +222,6 @@ function mergible(str1,str2){
   return c <= 1
 }
 
-function toSet(array){
-  let arr = []
-  for(let i=0;i<array.length;i++){
-    if(!arr.includes(array[i])){
-      arr.push(array[i])
-    }
-  }
-  return arr
-}
-
 function strCount(str, char){
   let c=0
   for(let i=0;i<String(str).length;i++){
@@ -250,8 +235,13 @@ function strCount(str, char){
 </script>
 
 <template>
-  {{funMDNF}}<br><br>
+  <v-btn size="x-large" @click="updateFuns">Вычислить</v-btn>
+  <br><br>{{funMDNF}}<br><br>
   {{funMKNF}}
+  <br><br>{{funDNF}}<br><br>
+  {{funKNF}}
+
+
 </template>
 
 <style scoped>
