@@ -17,6 +17,7 @@ function toBin4(num){
 }
 
 const funDNF = computed(() => {
+  deleteMNF()
   let fun = []
   for(let i=0;i<2**props.funLen;i++){
     if(props.chose==='Σ()' || props.chose==='Σ() + X()'){
@@ -37,6 +38,7 @@ const funDNF = computed(() => {
   return fun
 })
 const funKNF = computed(() => {
+  deleteMNF()
   let fun = []
   for(let i=0;i<2**props.funLen;i++){
     if(props.chose==='Σ()' || props.chose==='Σ() + X()'){
@@ -72,9 +74,6 @@ function updateMDNF() {
   for(let i=0;i<props.funLen;i++){
     fun = rangeNF(fun,'DNF')
     fun = mergeAll(fun)
-    if(!mergibleAll(fun)){
-      break;
-    }
   }
   funMDNF.value=fun
 }
@@ -94,9 +93,6 @@ function updateMKNF() {
   for(let i=0;i<props.funLen;i++){
     fun = rangeNF(fun,'KNF')
     fun = mergeAll(fun)
-    if(!mergibleAll(fun)){
-      break;
-    }
   }
   funMKNF.value=fun
 }
@@ -222,28 +218,98 @@ function mergible(str1,str2){
   return c <= 1
 }
 
+const prevMDNF = computed(() => {
+  let str = ''
+  let buffStr = ''
+  for(let i=0;i<props.funLen;i++){
+    buffStr+='*'
+  }
+  if(funMDNF.value.length===0){
+    return '0'
+  }else if(funMDNF.value[0].startsWith(buffStr)){
+    return '1'
+  }
+  for(let i=0;i<funMDNF.value.length;i++){
+    for(let j=0;j<funMDNF.value[i].length-1;j++){
+      if(funMDNF.value[i][j]==='0'){
+        str+='ā'+String(props.funLen-1-j)+(j===funMDNF.value[i].length-2?'':'∙')
+      }else if(funMDNF.value[i][j]==='1'){
+        str+='a'+String(props.funLen-1-j)+(j===funMDNF.value[i].length-2?'':'∙')
+      }
+    }
+    if(str.endsWith('∙')){
+      str=str.substring(0,str.length-1)
+    }
+    str+=i===funMDNF.value.length-1?'':' + '
+  }
+  return str
+})
+
+const prevMKNF = computed(() => {
+  let str = '('
+  let buffStr = ''
+  for(let i=0;i<props.funLen;i++){
+    buffStr+='*'
+  }
+  if(funMKNF.value.length===0){
+    return '1'
+  }else if(funMKNF.value[0].startsWith(buffStr)){
+    return '0'
+  }
+  for(let i=0;i<funMKNF.value.length;i++){
+    for(let j=0;j<funMKNF.value[i].length-1;j++){
+      if(funMKNF.value[i][j]==='0'){
+        str+='a'+String(props.funLen-1-j)+(j===funMKNF.value[i].length-2?'':'+')
+      }else if(funMKNF.value[i][j]==='1'){
+        str+='ā'+String(props.funLen-1-j)+(j===funMKNF.value[i].length-2?'':'+')
+      }
+    }
+    if(str.endsWith('+')){
+      str=str.substring(0,str.length-1)
+    }
+    str+=i===funMKNF.value.length-1?'':') ∙ ('
+  }
+  str+=')'
+  return str
+})
+
 function strCount(str, char){
   let c=0
-  for(let i=0;i<String(str).length;i++){
-    if(String(str)[i]===String(char)){
+  for(let i=0;i<str.length;i++){
+    if(str[i]===char){
       c++
     }
   }
   return c
 }
 
+function deleteMNF(){
+  funMDNF.value=[]
+  let buffStr = ''
+  for(let i=0;i<props.funLen;i++){
+    buffStr+='*'
+  }
+  funMKNF.value=[buffStr]
+}
+
 </script>
 
 <template>
   <v-btn size="x-large" @click="updateFuns">Вычислить</v-btn>
-  <br><br>{{funMDNF}}<br><br>
-  {{funMKNF}}
-  <br><br>{{funDNF}}<br><br>
-  {{funKNF}}
-
-
+  <h1 class="text-mono">МДНФ: </h1>
+  <h3>{{prevMDNF}}</h3>
+  <h1 class="text-mono">МКНФ: </h1>
+  <h3>{{prevMKNF}}</h3>
+  <div class="develop">
+    <br><br>{{funMDNF}}<br><br>
+    {{funMKNF}}
+    <br><br>{{funDNF}}<br><br>
+    {{funKNF}}
+  </div>
 </template>
 
 <style scoped>
-
+.develop{
+  display: none;
+}
 </style>

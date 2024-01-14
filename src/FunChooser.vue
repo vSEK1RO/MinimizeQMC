@@ -108,7 +108,8 @@ function clearChoseItems(){
         v-model="xfunChoseItems"
     >
     </v-select>
-    <h1 class="text-mono">Ваша функция: {{funPrev}}</h1>
+    <h1 class="text-mono">Ваша функция: </h1>
+    <h3>{{funPrev}}</h3>
   </v-form>
 </template>
 
