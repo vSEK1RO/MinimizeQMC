@@ -78,19 +78,7 @@ function clearChoseItems(){
         tick-size="4"
         @update:model-value="clearChoseItems"
         v-model="funLen"
-    >
-      <template v-slot:append>
-        <v-text-field
-            v-model="funLen"
-            hide-details
-            single-line
-            density="compact"
-            @update:model-value="clearChoseItems"
-            type="number"
-            style="width: 70px"
-        />
-      </template>
-    </v-slider>
+    ></v-slider>
     <v-select
         :label="'Выберите аргументы '+chose.substring(0,3)"
         :items="funItems"
