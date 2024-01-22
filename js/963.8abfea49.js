@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkminimize_qmc"]=self["webpackChunkminimize_qmc"]||[]).push([[963],{7963:function(n,e,u){function i(n,e){return null}u.r(e),u.d(e,{default:function(){return f}});var r=u(89);const c={},t=(0,r.Z)(c,[["render",i]]);var f=t}}]);
+//# sourceMappingURL=963.8abfea49.js.map
