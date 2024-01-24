@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <router-link to="/">Минимизация по Квайну-МакКласки</router-link> |
-    <router-link to="/beta">Проверка на общезначимость бета</router-link>
+    <router-link to="/">Минимизация по Квайну-МакКласки</router-link>
+<!--    |<router-link to="/beta">Проверка на общезначимость Э.Бэта</router-link>-->
   </nav>
   <router-view/>
 </template>

@@ -34,7 +34,7 @@ function updateItems(fItems, xfItems, fLen, chs){
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
 .qapp {
   padding: 0 10% 0 10%;
 }

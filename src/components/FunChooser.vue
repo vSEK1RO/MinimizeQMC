@@ -101,6 +101,6 @@ function clearChoseItems(){
   </v-form>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

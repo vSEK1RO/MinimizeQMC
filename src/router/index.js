@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -16,8 +16,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  base: '/MinimizeQMC/',
-  history: createWebHistory(),
+  history: createWebHistory('MinimizeQMC'),
   routes
 })
 
