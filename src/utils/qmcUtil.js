@@ -77,7 +77,6 @@ export function prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1
     return str
 }
 export function doPetrick(props,fun,type){
-    let impItems= []
     let impKNF = []
     let resFun = []
     let normFun
@@ -100,16 +99,33 @@ export function doPetrick(props,fun,type){
         }
         terms+='+'
         impKNF.push(terms)
-        impItems.push(parseInt(terms,2))
     }
-    let resProps = {
-        funItems: impItems,
-        xfunItems: [],
-        funLen: fun.length,
-        chose: 'Σ()',
+    for(let i=0;i<2**fun.length;i++){
+        impKNF = mergeAllHard(impKNF)
     }
-    impKNF = getMNF(resProps,impKNF,type='KNF')
     return impKNF
+}
+function mergeAllHard(fun){
+    let res = []
+    let frl = []
+    for(let i=0;i<fun.length;i++){
+        frl.push(0)
+    }
+    for(let i=0;i<fun.length-1;i++){
+        for(let j=i+1;j<fun.length;j++){
+            if(mergible(fun[i],fun[j]) && !res.includes(merge(fun[i],fun[j]))){
+                res.push(merge(fun[i],fun[j]))
+                frl[i]=1
+                frl[j]=1
+            }
+        }
+    }
+    for(let i=0;i<fun.length;i++){
+        if(frl[i]===0){
+            res.push(fun[i])
+        }
+    }
+    return res
 }
 function rangeNF(props, funList, type) {
     let fun = []
