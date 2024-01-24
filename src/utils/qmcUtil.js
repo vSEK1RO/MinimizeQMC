@@ -77,7 +77,8 @@ export function prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1
     return str
 }
 export function doPetrick(props,fun,type){
-    let kItems= []
+    let impItems= []
+    let impKNF = []
     let resFun = []
     let normFun
     if(type==='DNF'){
@@ -91,38 +92,24 @@ export function doPetrick(props,fun,type){
         }
         let terms=''
         for(let j=0;j<fun.length;j++){
-            if(isSubmask(fun[j],normFun[i])){
-                terms+='1'
-            }else{
+            if(mergible(fun[j],normFun[i])){
                 terms+='0'
+            }else{
+                terms+='*'
             }
         }
-        kItems.push(parseInt(terms,2))
+        terms+='+'
+        impKNF.push(terms)
+        impItems.push(parseInt(terms,2))
     }
     let resProps = {
-        funItems: kItems,
+        funItems: impItems,
         xfunItems: [],
         funLen: fun.length,
-        chose: 'Π()',
+        chose: 'Σ()',
     }
-    resFun = getDNF(resProps)
-    resFun = getMNF(resProps,resFun,type='DNF')
-    return resProps
-}
-function isSubmask(str1,str2){
-    str1=str1.substring(0,str1.length-1)
-    str2=str2.substring(0,str2.length-1)
-    if(str1.length!==str2.length){
-        return false
-    }
-    for(let i=0;i<str1.length;i++){
-        if(str1[i]!=='*' && str2[i]!=='*') {
-            if (str1[i] !== str2[i]){
-                return false
-            }
-        }
-    }
-    return true
+    impKNF = getMNF(resProps,impKNF,type='KNF')
+    return impKNF
 }
 function rangeNF(props, funList, type) {
     let fun = []
@@ -219,6 +206,7 @@ function mergible(str1,str2){
         return false
     }
     let c=0
+    let s1c=0,s2c=0
     for(let i=0;i<str1.length;i++){
         if(str1[i]!=='*' && str2[i]!=='*') {
             if (str1[i] !== str2[i]) {
@@ -228,12 +216,12 @@ function mergible(str1,str2){
                 break
             }
         }
-        if(str1[i]!=='*' ^ str2[i]!=='*'){
-            c++
+        if(str1[i]==='*' && str2[i]!=='*'){
+            s1c++
+        }
+        if(str1[i]!=='*' && str2[i]==='*'){
+            s2c++
         }
     }
-    if(strCount(str1,'*')!==strCount(str2,'*')){
-        return false
-    }
-    return c <= 1
+    return c === 0 && (s1c === 0 || s2c === 0) || c <= 1 && (s1c === 0 && s2c === 0);
 }

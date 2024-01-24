@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import {doPetrick, getDNF, getKNF, getMNF, prevFun} from "@/utils/qmcUtil";
-import {de, tr} from "vuetify/locale";
 
 const props = defineProps({
   "funItems": Array,
@@ -115,23 +114,21 @@ function deleteMNF(){
 </script>
 
 <template>
-  <p>
-    <v-btn size="x-large" @click="updateFuns">Вычислить</v-btn>
-    <h1 class="text-mono">МДНФ: </h1>
-    <h3>{{prevMDNF}}</h3>
-    <h1 class="text-mono">МКНФ: </h1>
-    <h3>{{prevMKNF}}</h3>
-    <v-btn size="x-large" @click="toggleDebug">Debug</v-btn>
-    <p class="debug">
-      <br>funDNF: {{funDNF}}
-      <br>funKNF: {{funKNF}}
-      <br><br>funMDNF: {{funMDNF}}
-      <br>funMKNF: {{funMKNF}}
-      <br><br>prevExpMDNF: {{prevExpMDNF}}
-      <br>prevPyMDNF: {{prevPyMDNF}}
-      <br><br>petrickMDNF: {{petrickMDNF}}
-      <br>petrickMKNF: {{petrickMKNF}}
-    </p>
+  <v-btn size="x-large" @click="updateFuns">Вычислить</v-btn>
+  <h1 class="text-mono">МДНФ: </h1>
+  <h3>{{prevMDNF}}</h3>
+  <h1 class="text-mono">МКНФ: </h1>
+  <h3>{{prevMKNF}}</h3>
+  <v-btn size="x-large" @click="toggleDebug">Debug</v-btn>
+  <p class="debug invisible">
+    <br>funDNF: {{funDNF}}
+    <br>funKNF: {{funKNF}}
+    <br><br>funMDNF: {{funMDNF}}
+    <br>funMKNF: {{funMKNF}}
+    <br><br>prevExpMDNF: {{prevExpMDNF}}
+    <br>prevPyMDNF: {{prevPyMDNF}}
+    <br><br>petrickMDNF: {{petrickMDNF}}
+    <br>petrickMKNF: {{petrickMKNF}}
   </p>
 </template>
 
