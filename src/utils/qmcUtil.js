@@ -1,4 +1,5 @@
-import {strCount, toBin} from "@/utils/strUtil";
+import {strCount, strFind, toBin} from "@/utils/strUtil";
+import {de} from "vuetify/locale";
 export function getDNF(props){
     let fun = []
     for(let i=0;i<2**props.funLen;i++){
@@ -58,7 +59,31 @@ export function getMNF(props,fun,type){
     }
     return fun
 }
-export function prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2){
+export function prevFunMDNF(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2){
+    let buffStr = ''
+    for(let i=0;i<props.funLen;i++){
+        buffStr+='*'
+    }
+    if(fun.length===0){
+        return '0'
+    }else if(fun[0].startsWith(buffStr)){
+        return '1'
+    }
+    return prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2)
+}
+export function prevFunMKNF(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2){
+    let buffStr = ''
+    for(let i=0;i<props.funLen;i++){
+        buffStr+='*'
+    }
+    if(fun.length===0){
+        return '1'
+    }else if(fun[0].startsWith(buffStr)){
+        return '0'
+    }
+    return prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2)
+}
+function prevFun(props,fun,begin,end,prefix1,suffix1,prefix2,suffix2,sep1,sep2){
     let str=begin
     for(let i=0;i<fun.length;i++){
         for(let j=0;j<fun[i].length-1;j++){
@@ -101,9 +126,70 @@ export function doPetrick(props,fun,type){
         impKNF.push(terms)
     }
     for(let i=0;i<2**fun.length;i++){
-        impKNF = mergeAllHard(impKNF)
+        impKNF = mergeAllHard(impKNF,fun)
     }
-    return impKNF
+    let graph = graphRec(impKNF)
+    let arr = []
+    let minTermsSum = Number. MAX_SAFE_INTEGER
+    let minTerms = []
+    graphSimplify(graph,arr)
+    for(let i=0;i<arr.length;i++){
+        let usedTerms = []
+        for(let j in arr[i]){
+            if(!usedTerms.includes(arr[i][j])){
+                usedTerms.push(arr[i][j])
+            }
+        }
+        arr[i]=usedTerms.slice()
+    }
+    console.log(arr)
+    for(let i=0;i<arr.length;i++){
+        let sum= arr[i].length-1
+        for(let j in arr[i]){
+            sum+=strCount(fun[arr[i][j]],'0')+strCount(fun[arr[i][j]],'1')-1
+        }
+        if(sum<minTermsSum){
+            minTermsSum=sum
+            minTerms=arr[i].slice()
+        }
+        console.log(arr[i],sum)
+    }
+    for(let i=0;i<minTerms.length;i++){
+        resFun.push(fun[minTerms[i]])
+    }
+    return resFun
+}
+function graphRec(impKNF,depth=0){
+    if(depth >= impKNF.length){
+        return -1
+    }
+    let resGraph = {}
+    let currTerm = impKNF[depth]
+    depth++
+    for(let i=0;i<strCount(currTerm,'0');i++){
+        let indexO = strFind(currTerm,'0',i+1)
+        resGraph[indexO]=graphRec(impKNF,depth)
+    }
+    return resGraph
+}
+function graphSimplify(graph,outputArr,depth=0,currTerm=[]){
+    depth++
+    if(graph !== -1){
+        for(let key in graph){
+            //console.log(depth-1,currTerm,key)
+            if(currTerm.length>=depth){
+                currTerm.splice(depth-1,currTerm.length-depth+1)
+                //console.log('slice',currTerm)
+            }
+            currTerm.push(key)
+            if(graphSimplify(graph[key],outputArr,depth,currTerm)===-1){
+                //console.log('output',currTerm)
+                outputArr.push(currTerm.slice())
+            }
+        }
+    }else{
+        return -1
+    }
 }
 function mergeAllHard(fun){
     let res = []

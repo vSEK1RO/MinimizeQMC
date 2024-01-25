@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import {doPetrick, getDNF, getKNF, getMNF, prevFun} from "@/utils/qmcUtil";
+import {doPetrick, getDNF, getKNF, getMNF, prevFunMDNF, prevFunMKNF} from "@/utils/qmcUtil";
 
 const props = defineProps({
   "funItems": Array,
@@ -11,7 +11,6 @@ const props = defineProps({
 function toggleDebug(){
   document.body.querySelector('.debug').classList.toggle('invisible')
 }
-
 const funDNF = computed(() => {
   deleteMNF()
   return getDNF(props)
@@ -25,6 +24,7 @@ const funMKNF = ref([])
 const petrickMDNF = ref([])
 const petrickMKNF = ref([])
 function updateFuns(){
+  deleteMNF()
   let MDNF = getMNF(props,funDNF.value,'DNF')
   let MKNF = getMNF(props,funKNF.value,'KNF')
   funMDNF.value = MDNF
@@ -34,67 +34,31 @@ function updateFuns(){
     petrickMKNF.value = doPetrick(props,MKNF,'KNF')
   }
 }
-const prevExpMDNF = computed(() => {
-  let buffStr = ''
-  for(let i=0;i<props.funLen;i++){
-    buffStr+='*'
-  }
-  if(funMDNF.value.length===0){
-    return '0'
-  }else if(funMDNF.value[0].startsWith(buffStr)){
-    return '1'
-  }
-  return prevFun(
-      props,
-      funMDNF.value,
-      '','','¬a','','a','','∧',' ∨ '
-  )
-})
 const prevPyMDNF = computed(() => {
-  let buffStr = ''
-  for(let i=0;i<props.funLen;i++){
-    buffStr+='*'
-  }
-  if(funMDNF.value.length===0){
-    return '0'
-  }else if(funMDNF.value[0].startsWith(buffStr)){
-    return '1'
-  }
-  return prevFun(
+  return prevFunMDNF(
       props,
-      funMDNF.value,
+      petrickMDNF.value,
       '','','not(a',')','a','',' and ',' or '
   )
 })
-const prevMDNF = computed(() => {
-  let buffStr = ''
-  for(let i=0;i<props.funLen;i++){
-    buffStr+='*'
-  }
-  if(funMDNF.value.length===0){
-    return '0'
-  }else if(funMDNF.value[0].startsWith(buffStr)){
-    return '1'
-  }
-  return prevFun(
+const prevPyMKNF = computed(() => {
+  return prevFunMDNF(
       props,
-      funMDNF.value,
+      petrickMKNF.value,
+      '(',')','a','','not(a',')',' or ',') and ('
+  )
+})
+const prevMDNF = computed(() => {
+  return prevFunMDNF(
+      props,
+      petrickMDNF.value,
       '','','ā','','a','','∙',' + '
   )
 })
 const prevMKNF = computed(() => {
-  let buffStr = ''
-  for(let i=0;i<props.funLen;i++){
-    buffStr+='*'
-  }
-  if(funMKNF.value.length===0){
-    return '1'
-  }else if(funMKNF.value[0].startsWith(buffStr)){
-    return '0'
-  }
-  return prevFun(
+  return prevFunMKNF(
       props,
-      funMKNF.value,
+      petrickMKNF.value,
       '(',')','a','','ā','','+',') ∙ ('
   )
 })
@@ -121,12 +85,12 @@ function deleteMNF(){
   <h3>{{prevMKNF}}</h3>
   <v-btn size="x-large" @click="toggleDebug">Debug</v-btn>
   <p class="debug invisible">
-    <br>funDNF: {{funDNF}}
+    <br>prevPyMDNF: {{prevPyMDNF}}
+    <br>prevPyMKNF: {{prevPyMKNF}}
+    <br><br>funDNF: {{funDNF}}
     <br>funKNF: {{funKNF}}
     <br><br>funMDNF: {{funMDNF}}
     <br>funMKNF: {{funMKNF}}
-    <br><br>prevExpMDNF: {{prevExpMDNF}}
-    <br>prevPyMDNF: {{prevPyMDNF}}
     <br><br>petrickMDNF: {{petrickMDNF}}
     <br>petrickMKNF: {{petrickMKNF}}
   </p>
