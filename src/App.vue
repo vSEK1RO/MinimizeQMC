@@ -1,30 +1,65 @@
 <template>
-  <nav>
-    <router-link to="/">Минимизация по Квайну-МакКласки</router-link>
-<!--    |<router-link to="/beta">Проверка на общезначимость Э.Бэта</router-link>-->
-  </nav>
+  <header>
+    <h1 class="text-mono">Минимизация по Квайну-МакКласки</h1>
+  </header>
+<!--    <router-link to="/">Минимизация по Квайну-МакКласки</router-link>-->
+<!--    <router-link to="/beta">Проверка на общезначимость Э.Бэта</router-link>-->
   <router-view/>
+  <footer>
+    <a href="https://icis.mephi.ru/">
+      <img src="/mephi_white.svg" height="60px">
+    </a>
+    <a href="https://github.com/vSEK1RO/MinimizeQMC">
+      <img src="/github-mark-white.svg" height="60px">
+    </a>
+  </footer>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 #app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-size: 20px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+footer, header{
+  font-size: calc(0.5em + 0.8vw);
+  position: sticky;
+  height: 80px;
+  width: 100%;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+  left: 0;
+  z-index: 1;
+  backdrop-filter: blur(4px);
+  color: white;
+  background-color: rgba(44, 62, 80, 0.7);
+}
+header {
+  top: 0;
+  justify-items: center;
+  align-items: center;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  @for $i from 1 through 3 {
+    &>:nth-child(#{$i}) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
+a {
+  text-decoration: none;
+  color: white;
+}
 </style>
+<script setup>
+</script>

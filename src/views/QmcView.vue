@@ -21,7 +21,7 @@ function updateItems(fItems, xfItems, fLen, chs){
 </script>
 
 <template>
-  <div class="qapp">
+  <div class="minimizer_qmc">
     <FunChooser
         :update-items="updateItems"
     />
@@ -34,8 +34,22 @@ function updateItems(fItems, xfItems, fLen, chs){
   </div>
 </template>
 
-<style scoped lang="scss">
-.qapp {
-  padding: 0 10% 0 10%;
+<style lang="scss">
+.minimizer_qmc {
+  height: 100%;
+  padding: 5% 10% 5% 10%;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  gap: 14px;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-rows: repeat(auto-fill,fit-content(100px));
+  @for $i from 1 through 5 {
+    &>:nth-child(#{$i}) {
+      grid-column: 1/2;
+      grid-row: #{$i}/#{$i + 1};
+    }
+  }
 }
 </style>

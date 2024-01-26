@@ -60,45 +60,45 @@ function clearChoseItems(){
 </script>
 
 <template>
-  <v-form>
-    <v-select
-        variant="solo-filled"
-        label="Выберите тип задания функции"
-        :items="items"
-        v-model="chose"
-        @update:model-value="clearChoseItems"
-    ></v-select>
-    <h3 class="text-mono">Выберите количество переменных</h3>
-    <v-slider
-        :ticks="tickLabels"
-        :max="funMaxLen"
-        min="2"
-        step="1"
-        show-ticks="always"
-        tick-size="4"
-        @update:model-value="clearChoseItems"
-        v-model="funLen"
-    ></v-slider>
-    <v-select
-        :label="'Выберите аргументы '+chose.substring(0,3)"
-        :items="funItems"
-        multiple="true"
-        variant="solo-filled"
-        v-model="funChoseItems"
-    >
-    </v-select>
-    <v-select
-        :disabled="chose===items[0] || chose===items[1]"
-        label="Выберите аргументы X()"
-        :items="xfunItems"
-        multiple="true"
-        variant="solo-filled"
-        v-model="xfunChoseItems"
-    >
-    </v-select>
-    <h1 class="text-mono">Ваша функция: </h1>
-    <h3>{{funPrev}}</h3>
-  </v-form>
+  <v-select
+      variant="solo-filled"
+      label="Выберите тип задания функции"
+      :items="items"
+      v-model="chose"
+      @update:model-value="clearChoseItems"
+  ></v-select>
+  <h2 class="text-mono">Выберите количество переменных</h2>
+  <v-slider
+      :ticks="tickLabels"
+      :max="funMaxLen"
+      min="2"
+      step="1"
+      show-ticks="always"
+      tick-size="4"
+      @update:model-value="clearChoseItems"
+      v-model="funLen"
+  ></v-slider>
+  <v-select
+      :label="'Выберите аргументы '+chose.substring(0,3)"
+      :items="funItems"
+      multiple
+      variant="solo-filled"
+      v-model="funChoseItems"
+  >
+  </v-select>
+  <v-select
+      :disabled="chose===items[0] || chose===items[1]"
+      label="Выберите аргументы X()"
+      :items="xfunItems"
+      multiple
+      variant="solo-filled"
+      v-model="xfunChoseItems"
+  >
+  </v-select>
+  <div class="fun_prev">
+    <h2 class="text-mono">Ваша функция: </h2>
+    <h4>{{funPrev}}</h4>
+  </div>
 </template>
 
 <style scoped lang="scss">

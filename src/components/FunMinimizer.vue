@@ -78,14 +78,18 @@ function deleteMNF(){
 </script>
 
 <template>
-  <v-btn size="x-large" @click="updateFuns">Вычислить</v-btn>
-  <h1 class="text-mono">МДНФ: </h1>
-  <h3>{{prevMDNF}}</h3>
-  <h1 class="text-mono">МКНФ: </h1>
-  <h3>{{prevMKNF}}</h3>
-  <v-btn size="x-large" @click="toggleDebug">Debug</v-btn>
+  <v-btn color="#f6f6f6" id="btn__process" size="x-large" @click="updateFuns">Вычислить</v-btn>
+  <div class="mdnf_prev">
+    <h2 class="text-mono">МДНФ: </h2>
+    <h4>{{prevMDNF}}</h4>
+  </div>
+  <div class="mknf_prev">
+    <h2 class="text-mono">МКНФ: </h2>
+    <h4>{{prevMKNF}}</h4>
+  </div>
+  <v-btn color="#f6f6f6" id="btn__debug" size="x-large" @click="toggleDebug">Debug</v-btn>
   <p class="debug invisible">
-    <br>prevPyMDNF: {{prevPyMDNF}}
+    prevPyMDNF: {{prevPyMDNF}}
     <br>prevPyMKNF: {{prevPyMKNF}}
     <br><br>funDNF: {{funDNF}}
     <br>funKNF: {{funKNF}}
@@ -97,6 +101,9 @@ function deleteMNF(){
 </template>
 
 <style scoped lang="scss">
+.debug {
+  font-size: 0.8em;
+}
 .invisible {
   display: none;
 }
