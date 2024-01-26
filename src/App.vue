@@ -7,10 +7,10 @@
   <router-view/>
   <footer>
     <a href="https://icis.mephi.ru/">
-      <img src="/mephi_white.svg" height="60px">
+      <img :src="base + 'assets/mephi_white.svg'" height="60px">
     </a>
     <a href="https://github.com/vSEK1RO/MinimizeQMC">
-      <img src="/github-mark-white.svg" height="60px">
+      <img :src="base + 'assets/github-mark-white.svg'" height="60px">
     </a>
   </footer>
 </template>
@@ -62,4 +62,5 @@ a {
 }
 </style>
 <script setup>
+const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
 </script>
