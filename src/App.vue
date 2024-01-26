@@ -26,10 +26,25 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+@media screen and (min-width: 900px){
+  header{
+    height: 80px;
+  }
+  footer{
+    position: fixed;
+    bottom: 0;
+  }
+}
+@media screen and (max-width: 900px){
+  header{
+    height: 60px;
+  }
+  footer{
+    position: static;
+  }
+}
 footer, header{
   font-size: calc(0.5em + 0.8vw);
-  position: sticky;
-  height: 80px;
   width: 100%;
   display: grid;
   gap: 20px;
@@ -41,13 +56,13 @@ footer, header{
   background-color: rgba(44, 62, 80, 0.7);
 }
 header {
+  position: sticky;
   top: 0;
   justify-items: center;
   align-items: center;
 }
 footer {
-  position: fixed;
-  bottom: 0;
+  height: 80px;
   @for $i from 1 through 3 {
     &>:nth-child(#{$i}) {
       display: flex;

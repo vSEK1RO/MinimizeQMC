@@ -35,6 +35,16 @@ function updateItems(fItems, xfItems, fLen, chs){
 </template>
 
 <style lang="scss">
+@media screen and (min-width: 900px){
+  .minimizer_qmc {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (max-width: 900px){
+  .minimizer_qmc {
+    grid-template-columns: 1fr;
+  }
+}
 .minimizer_qmc {
   height: 100%;
   padding: 5% 10% 5% 10%;
@@ -43,7 +53,6 @@ function updateItems(fItems, xfItems, fLen, chs){
   align-content: center;
   gap: 14px;
   grid-auto-flow: row;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-template-rows: repeat(auto-fill,fit-content(100px));
   @for $i from 1 through 5 {
     &>:nth-child(#{$i}) {
