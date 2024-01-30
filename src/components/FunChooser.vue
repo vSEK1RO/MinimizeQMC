@@ -17,6 +17,18 @@ const tickLabels = computed(() => {
   }
   return arr
 })
+const funDefPrev = computed(() => {
+  let str = 'F('
+  for(let i=0;i<funLen.value;i++){
+    str+='a'+String(funLen.value-i-1)
+    if(i===funLen.value-1){
+      str+=')'
+    }else{
+      str+=','
+    }
+  }
+  return str
+})
 const funPrev = computed(() => {
   let str = chose.value
   props.updateItems(funChoseItems,xfunChoseItems,funLen,chose)
@@ -99,8 +111,8 @@ function clearChoseItems(){
   >
   </v-select>
   <div class="fun_prev">
-    <h2 class="text-mono">{{t('fun_chooser.text_your_fun')}}</h2>
-    <h4>{{funPrev}}</h4>
+    <h4>{{funDefPrev}} =</h4>
+    <h2>{{funPrev}}</h2>
   </div>
 </template>
 
