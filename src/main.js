@@ -12,4 +12,10 @@ const vuetify = createVuetify({
     directives,
 })
 
-createApp(App).use(router).use(vuetify).mount('#app')
+import {i18n} from "./locales/i18n_init"
+
+createApp(App)
+    .use(router)
+    .use(vuetify)
+    .use(i18n)
+    .mount('#app')

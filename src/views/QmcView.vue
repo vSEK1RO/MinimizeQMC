@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import FunChooser from '../components/FunChooser.vue'
 import FunMinimizer from '../components/FunMinimizer.vue'
+import LocaleChooser from "@/components/LocaleChooser.vue";
 
 const funChoseItems = ref([])
 const xfunChoseItems = ref([])
@@ -18,29 +19,48 @@ function updateItems(fItems, xfItems, fLen, chs){
   funLen.value=fLen.value
   chose.value=chs.value
 }
+
 </script>
 
 <template>
-  <div class="minimizer_qmc">
-    <FunChooser
-        :update-items="updateItems"
-    />
-    <FunMinimizer
-        :fun-items="funChoseItems"
-        :xfun-items="xfunChoseItems"
-        :fun-len="funLen"
-        :chose="chose"
-    />
+  <div class="qmc_view">
+    <div class="locale_chooser">
+      <LocaleChooser/>
+    </div>
+    <div class="minimizer_qmc">
+      <FunChooser
+          :update-items="updateItems"
+      />
+      <FunMinimizer
+          :fun-items="funChoseItems"
+          :xfun-items="xfunChoseItems"
+          :fun-len="funLen"
+          :chose="chose"
+      />
+    </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
+.locale_chooser {
+  z-index: 1;
+  position: fixed;
+  right: 10px;
+  width: 55px;
+  height: 40px;
+}
 @media screen and (min-width: 900px){
+  .locale_chooser{
+    top: 90px;
+  }
   .minimizer_qmc {
     grid-template-columns: 1fr 1fr;
   }
 }
 @media screen and (max-width: 900px){
+  .locale_chooser{
+    top: 70px;
+  }
   .minimizer_qmc {
     grid-template-columns: 1fr;
   }

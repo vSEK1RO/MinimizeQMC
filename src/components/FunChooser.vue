@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+import { useI18n } from "vue-i18n"
+const { t } = useI18n()
+
 const props = defineProps({
   "updateItems": Function,
 })
@@ -61,13 +64,13 @@ function clearChoseItems(){
 
 <template>
   <v-select
-      variant="solo-filled"
-      label="Выберите тип задания функции"
+      :label="t('fun_chooser.select_type')"
       :items="items"
+      variant="solo-filled"
       v-model="chose"
       @update:model-value="clearChoseItems"
   ></v-select>
-  <h2 class="text-mono">Выберите количество переменных</h2>
+  <h2 class="text-mono">{{t('fun_chooser.text_vars_count')}}</h2>
   <v-slider
       :ticks="tickLabels"
       :max="funMaxLen"
@@ -79,7 +82,7 @@ function clearChoseItems(){
       v-model="funLen"
   ></v-slider>
   <v-select
-      :label="'Выберите аргументы '+chose.substring(0,3)"
+      :label="t('fun_chooser.select_args')+' '+chose.substring(0,3)"
       :items="funItems"
       multiple
       variant="solo-filled"
@@ -88,7 +91,7 @@ function clearChoseItems(){
   </v-select>
   <v-select
       :disabled="chose===items[0] || chose===items[1]"
-      label="Выберите аргументы X()"
+      :label="t('fun_chooser.select_args')+' X()'"
       :items="xfunItems"
       multiple
       variant="solo-filled"
@@ -96,7 +99,7 @@ function clearChoseItems(){
   >
   </v-select>
   <div class="fun_prev">
-    <h2 class="text-mono">Ваша функция: </h2>
+    <h2 class="text-mono">{{t('fun_chooser.text_your_fun')}}</h2>
     <h4>{{funPrev}}</h4>
   </div>
 </template>

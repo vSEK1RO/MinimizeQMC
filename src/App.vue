@@ -1,6 +1,12 @@
+<script setup>
+import { useI18n } from "vue-i18n"
+const { t } = useI18n()
+const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
+</script>
+
 <template>
   <header>
-    <h1 class="text-mono">Минимизация по Квайну-МакКласки</h1>
+    <h1 class="text-mono">{{t('header')}}</h1>
   </header>
 <!--    <router-link to="/">Минимизация по Квайну-МакКласки</router-link>-->
 <!--    <router-link to="/beta">Проверка на общезначимость Э.Бэта</router-link>-->
@@ -76,6 +82,3 @@ a {
   color: white;
 }
 </style>
-<script setup>
-const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
-</script>
