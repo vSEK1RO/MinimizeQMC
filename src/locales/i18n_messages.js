@@ -7,9 +7,9 @@ export const messages = {
             select_args: "Select arguments",
         },
         fun_minimizer: {
-            button_process: "Process: ",
-            text_mdnf: "MDNF",
-            text_mcnf: "MCNF",
+            button_process: "Process",
+            text_mdnf: "Minimal SOP",
+            text_mcnf: "Minimal POS",
             button_debug: "Debug",
         }
     },
