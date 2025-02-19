@@ -115,7 +115,3 @@ function clearChoseItems(){
     <h2>{{funPrev}}</h2>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

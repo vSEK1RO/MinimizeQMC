@@ -10,6 +10,7 @@ export const messages = {
             button_process: "Process",
             text_mdnf: "Minimal SOP",
             text_mcnf: "Minimal POS",
+            transistors_count: "Transistors count",
             button_debug: "Debug",
         }
     },
@@ -24,6 +25,7 @@ export const messages = {
             button_process: "Вычислить",
             text_mdnf: "МДНФ",
             text_mcnf: "МКНФ",
+            transistors_count: "Количество транзисторов",
             button_debug: "Отладка",
         }
     }

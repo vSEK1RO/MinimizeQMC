@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import {doPetrick, getDNF, getKNF, getMNF, prevFunMDNF, prevFunMKNF} from "@/utils/qmcUtil";
 
 import { useI18n } from "vue-i18n"
+import { countTransistors } from '@/utils/transistorsUtil';
 const { t } = useI18n()
 
 const props = defineProps({
@@ -65,6 +66,12 @@ const prevMKNF = computed(() => {
       '(',')','a','','ā','','+',') ∙ ('
   )
 })
+const transistorsMDNF = computed(() => {
+  return countTransistors(petrickMDNF.value, true)
+})
+const transistorsMKNF = computed(() => {
+  return countTransistors(petrickMKNF.value, false)
+})
 
 function deleteMNF(){
   funMDNF.value=[]
@@ -80,13 +87,22 @@ function deleteMNF(){
 
 <template>
   <v-btn color="#f6f6f6" id="btn__process" size="x-large" @click="updateFuns">{{t('fun_minimizer.button_process')}}</v-btn>
-  <div class="mdnf_prev">
-    <h2 class="text-mono">{{t('fun_minimizer.text_mdnf')}}</h2>
-    <h4>{{prevMDNF}}</h4>
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <h2 class="text-mono">{{t('fun_minimizer.text_mdnf')}}</h2>
+      <h4>{{prevMDNF}}</h4>
+    </div>
+    <div>
+      <h2>{{ t('fun_minimizer.transistors_count') }} </h2>
+      <h4 style="text-align: right;">{{ transistorsMDNF }}</h4>  
+    </div>
   </div>
-  <div class="mknf_prev">
-    <h2 class="text-mono">{{t('fun_minimizer.text_mcnf')}}</h2>
-    <h4>{{prevMKNF}}</h4>
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <h2 class="text-mono">{{t('fun_minimizer.text_mcnf')}}</h2>
+      <h4>{{prevMKNF}}</h4>
+    </div>
+    <h4 style="margin-top: 32px;">{{ transistorsMKNF }}</h4>
   </div>
   <v-btn color="#f6f6f6" id="btn__debug" size="x-large" @click="toggleDebug">{{t('fun_minimizer.button_debug')}}</v-btn>
   <p class="debug invisible">
