@@ -8,8 +8,6 @@ const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
   <header>
     <h1 class="text-mono">{{t('header')}}</h1>
   </header>
-<!--    <router-link to="/">Минимизация по Квайну-МакКласки</router-link>-->
-<!--    <router-link to="/beta">Проверка на общезначимость Э.Бэта</router-link>-->
   <router-view/>
   <footer>
     <a href="https://icis.mephi.ru/">
@@ -21,7 +19,7 @@ const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
   </footer>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 #app {
   display: flex;
   flex-direction: column;

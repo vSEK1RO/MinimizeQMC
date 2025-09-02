@@ -1,5 +1,4 @@
 import {strCount, strFind, toBin} from "@/utils/strUtil";
-import {de} from "vuetify/locale";
 export function getDNF(props){
     let fun = []
     for(let i=0;i<2**props.funLen;i++){
@@ -142,7 +141,6 @@ export function doPetrick(props,fun,type){
         }
         arr[i]=usedTerms.slice()
     }
-    console.log(arr)
     for(let i=0;i<arr.length;i++){
         let sum= arr[i].length-1
         for(let j in arr[i]){
@@ -152,7 +150,6 @@ export function doPetrick(props,fun,type){
             minTermsSum=sum
             minTerms=arr[i].slice()
         }
-        console.log(arr[i],sum)
     }
     for(let i=0;i<minTerms.length;i++){
         resFun.push(fun[minTerms[i]])
@@ -176,14 +173,11 @@ function graphSimplify(graph,outputArr,depth=0,currTerm=[]){
     depth++
     if(graph !== -1){
         for(let key in graph){
-            //console.log(depth-1,currTerm,key)
             if(currTerm.length>=depth){
                 currTerm.splice(depth-1,currTerm.length-depth+1)
-                //console.log('slice',currTerm)
             }
             currTerm.push(key)
             if(graphSimplify(graph[key],outputArr,depth,currTerm)===-1){
-                //console.log('output',currTerm)
                 outputArr.push(currTerm.slice())
             }
         }

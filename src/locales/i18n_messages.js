@@ -10,8 +10,13 @@ export const messages = {
             button_process: "Process",
             text_mdnf: "Minimal SOP",
             text_mcnf: "Minimal POS",
-            transistors_count: "Transistors count",
+            transistors_count: "Transistors number",
+            button_veitch: "Veitch diagram",
             button_debug: "Debug",
+        },
+        veitch: {
+            variables: 'Variable names',
+            unsupported: 'Only functions with 3-4 variables are supported',
         }
     },
     ru: {
@@ -26,7 +31,12 @@ export const messages = {
             text_mdnf: "МДНФ",
             text_mcnf: "МКНФ",
             transistors_count: "Количество транзисторов",
+            button_veitch: "Диаграмма Вейча",
             button_debug: "Отладка",
+        },
+        veitch: {
+            variables: 'Имена переменных',
+            unsupported: 'Поддерживаются только функции 3-4 переменных',
         }
     }
 }

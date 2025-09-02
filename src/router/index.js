@@ -8,10 +8,10 @@ const routes = [
     component: () => import('../views/QmcView.vue')
   },
   {
-    path: '/beta',
-    name: 'beta',
-    meta: { title: 'Beta' },
-    component: () => import('../views/BetaView.vue')
+    path: '/veitch',
+    name: 'veitch',
+    meta: { title: 'Veitch' },
+    component: () => import('../views/VeitchView.vue')
   }
 ]
 
@@ -21,7 +21,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
   document.title = to.meta.title;
   next();
 });
