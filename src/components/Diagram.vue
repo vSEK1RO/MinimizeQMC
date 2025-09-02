@@ -1,4 +1,6 @@
 <script setup>
+import { computed, ref } from 'vue'
+
 const props = defineProps({
   funLen: Number,
   rectW: Number,
@@ -10,52 +12,89 @@ const props = defineProps({
   t1: Array,
   tx: Array,
   mt: Array,
+  showStroke: Boolean,
+  showFill: Boolean,
 })
 
-function isMinterm(idx) {
-  let bin = idx.toString(2)
-  while (bin.length != props.funLen) {
-    bin = '0' + bin
-  }
-  for (const mt of props.mt) {
-    const mt_sliced = mt.slice(0, mt.length - 1)
+const colors = ref(["fuchsia", "aqua", "lime", "yellow", "red"])
+
+const mt = computed(() => {
+  const terms = Array(props.mt.length)
+  const cells = Array(props.mt.length)
+
+  for (let j = 0; j < props.mt.length; j++) {
+    terms[j] = { lx: 100, ly: 100, hx: 0, hy: 0 }
+    cells[j] = new Set
+    const mt_sliced = props.mt[j].slice(0, props.mt[j].length - 1)
     const mt_regex = mt_sliced.replaceAll('*', '.')
-    if (bin.match(mt_regex)) {
-      console.log(bin, mt_regex)
-      return true
+
+    for (let i = 0; i < 2 ** props.funLen; i++) {
+      let bin = i.toString(2)
+      while (bin.length != props.funLen) {
+        bin = '0' + bin
+      }
+      
+      if (bin.match(mt_regex)) {
+        cells[j].add(i)
+        const x = props.rects[i].x
+        const y = props.rects[i].y
+        if (x < terms[j].lx || y < terms[j].ly) {
+          terms[j].lx = x
+          terms[j].ly = y
+        }
+        if (x > terms[j].hx || y > terms[j].hy) {
+          terms[j].hx = x
+          terms[j].hy = y
+        }
+      }
     }
+    terms[j].hx += props.rectW * 0.95
+    terms[j].hy += props.rectH * 0.95
+    terms[j].lx += props.rectW * 0.05
+    terms[j].ly += props.rectH * 0.05
   }
-}
+  
+  return { terms, cells }
+})
 </script>
 
 <template>
   <svg viewBox="-30 -30 170 170" xmlns="http://www.w3.org/2000/svg">
-  <template v-for="rect, idx in props.rects" :key="idx">
-    <rect :class="isMinterm(idx) ? 'minterm' : ''" :x="rect.x" :y="rect.y" :width="props.rectW" :height="props.rectH"/>
-    <text class="t1"
-      v-if="props.t1.find(t => t == idx)"
-      :x="rect.x + props.rectW * 0.5"
-      :y="rect.y + props.rectH * 0.65"
-    >1</text>
-    <text class="tx"
-      v-else-if="props.tx.find(t => t == idx)"
-      :x="rect.x + props.rectW * 0.5"
-      :y="rect.y + props.rectH * 0.65"
-    >x</text>
-    <text class="t0"
-      v-else
-      :x="rect.x + props.rectW * 0.5"
-      :y="rect.y + props.rectH * 0.65"
-    >0</text>
-    <text class="numbers" :x="rect.x + props.rectW * 0.95" :y="rect.y + props.rectH * 0.95">{{ idx }}</text>
-  </template>
-  <path
-    v-for="path, idx in props.paths" :key="idx"
-    :transform="path.t"
-    :stroke-width="path.sw"
-    d="M0 50c-3 0 -6 -3 -6 -6v-13c0 -3 -3 -6 -6 -6c3 0 6 -3 6 -6v-13c0 -3 3 -6 6 -6"/>
-  <text class="variables" v-for="text, idx in props.texts" :key="idx" :x="text.x" :y="text.y">{{ props.variables[idx] }}</text>
-</svg>
+    <template v-for="rect, idx in props.rects" :key="idx">
+      <template v-for="cell, jdx in mt.cells" :key="jdx">
+        <rect
+          :x="rect.x" :y="rect.y" :width="props.rectW" :height="props.rectH"
+          :fill="cell.has(idx) && showFill ? 'color-mix(in lab,'+ colors[jdx] +', 80% transparent)' : ''"/>
+      </template>
+      <text class="t1"
+        v-if="props.t1.find(t => t == idx)"
+        :x="rect.x + props.rectW * 0.5"
+        :y="rect.y + props.rectH * 0.65"
+      >1</text>
+      <text class="tx"
+        v-else-if="props.tx.find(t => t == idx)"
+        :x="rect.x + props.rectW * 0.5"
+        :y="rect.y + props.rectH * 0.65"
+      >x</text>
+      <text class="t0"
+        v-else
+        :x="rect.x + props.rectW * 0.5"
+        :y="rect.y + props.rectH * 0.65"
+      >0</text>
+      <text class="numbers" :x="rect.x + props.rectW * 0.9" :y="rect.y + props.rectH * 0.9">{{ idx }}</text>
+    </template>
+    <path
+      v-for="term, idx of mt.terms" :key="idx"
+      :d="`M${term.lx} ${term.ly}h${term.hx - term.lx}v${term.hy - term.ly}h${term.lx - term.hx}Z`"
+      :stroke="showStroke ? colors[idx] : 'none'"
+    />
+    <path
+      v-for="path, idx in props.paths" :key="idx"
+      :transform="path.t"
+      :stroke-width="path.sw"
+      d="M0 50c-3 0 -6 -3 -6 -6v-13c0 -3 -3 -6 -6 -6c3 0 6 -3 6 -6v-13c0 -3 3 -6 6 -6"/>
+    <text class="variables" v-for="text, idx in props.texts" :key="idx" :x="text.x" :y="text.y">{{ props.variables[idx] }}</text>
+  </svg>
 </template>
 
 <style scoped>
@@ -96,9 +135,5 @@ svg .numbers {
 svg .variables {
   font-size: 12px;
   text-anchor: middle;
-}
-
-svg .minterm {
-  fill: rgb(225, 225, 225);
 }
 </style>

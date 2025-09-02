@@ -79,39 +79,56 @@ switch (route.query.funLen) {
     ]
     break
 }
+
+function toArray(query) {
+  if (Array.isArray(query)) {
+    return query
+  } else {
+    return [query]
+  }
+}
+
+const showFill = ref(true)
+const showStroke = ref(false)
 </script>
 
 <template>
   <div class="wrapper">
+    <div class="switches">
+      <v-switch v-model="showFill" :label="t('veitch.show_fill')" />
+      <v-switch v-model="showStroke" :label="t('veitch.show_stroke')" />
+    </div>
     <v-text-field
       style="width: 100%; max-width: 400px;"
       :label="t('veitch.variables')"
       v-model="variablesNames"
-      ></v-text-field>
-    <h3 v-if="route.query.funLen != '3' && route.query.funLen != '4'">
+      />
+    <h3 v-if="!route.query.MDNF || !route.query.MKNF || route.query.funLen != '3' && route.query.funLen != '4'">
       {{ t('veitch.unsupported') }}
     </h3>
     <div v-else class="diagrams">
       <h3 class="text-mono">{{ t('fun_minimizer.text_mdnf') }}</h3>
       <diagram
-        :fun-len="route.query.funLen"
+        :fun-len="Number(route.query.funLen)"
         :rect-w="rectW"
         :rect-h="rectH"
         :rects :paths
         :texts :variables
-        :t1="route.query.t1"
-        :tx="route.query.tx"
-        :mt="route.query.MDNF"/>
+        :t1="toArray(route.query.t1)"
+        :tx="toArray(route.query.tx)"
+        :mt="toArray(route.query.MDNF)"
+        :show-fill="showFill" :show-stroke="showStroke"/>
       <h3 class="text-mono">{{ t('fun_minimizer.text_mcnf') }}</h3>
       <diagram
-        :fun-len="route.query.funLen"
+        :fun-len="Number(route.query.funLen)"
         :rect-w="rectW"
         :rect-h="rectH"
         :rects :paths
         :texts :variables
-        :t1="route.query.t1"
-        :tx="route.query.tx"
-        :mt="route.query.MKNF"/>
+        :t1="toArray(route.query.t1)"
+        :tx="toArray(route.query.tx)"
+        :mt="toArray(route.query.MKNF)"
+        :show-fill="showFill" :show-stroke="showStroke"/>
     </div>
   </div>
 </template>
@@ -121,8 +138,21 @@ h3 {
   font-size: 28px;
 }
 
+.switches {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.switches * {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
 .wrapper {
   padding: 16px;
+  gap: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
