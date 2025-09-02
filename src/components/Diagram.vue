@@ -61,6 +61,7 @@ const mt = computed(() => {
 <template>
   <svg viewBox="-30 -30 170 170" xmlns="http://www.w3.org/2000/svg">
     <template v-for="rect, idx in props.rects" :key="idx">
+      <rect v-if="mt.cells.length == 0" :x="rect.x" :y="rect.y" :width="props.rectW" :height="props.rectH"/>
       <template v-for="cell, jdx in mt.cells" :key="jdx">
         <rect
           :x="rect.x" :y="rect.y" :width="props.rectW" :height="props.rectH"

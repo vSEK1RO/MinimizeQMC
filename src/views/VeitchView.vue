@@ -103,7 +103,7 @@ const showStroke = ref(false)
       :label="t('veitch.variables')"
       v-model="variablesNames"
       />
-    <h3 v-if="!route.query.MDNF || !route.query.MKNF || route.query.funLen != '3' && route.query.funLen != '4'">
+    <h3 v-if="route.query.funLen != '3' && route.query.funLen != '4'">
       {{ t('veitch.unsupported') }}
     </h3>
     <div v-else class="diagrams">
