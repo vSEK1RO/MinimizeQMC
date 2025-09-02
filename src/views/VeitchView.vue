@@ -160,6 +160,7 @@ h3 {
 
 .diagrams {
   display: grid;
+  width: 100%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
   grid-auto-flow: column;

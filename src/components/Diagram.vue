@@ -100,7 +100,8 @@ const mt = computed(() => {
 
 <style scoped>
 svg {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   fill: none;
   stroke: #2c3e50;
   stroke-width: 1px;

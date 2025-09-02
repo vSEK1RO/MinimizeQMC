@@ -19,7 +19,7 @@ const base = process.env.NODE_ENV === 'production' ? '/MinimizeQMC/' : '/'
   </footer>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 #app {
   display: flex;
   flex-direction: column;
