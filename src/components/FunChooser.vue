@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { FUNCTION_STORE } from '@/store/function'
+import { ref, computed, onMounted, watch } from 'vue'
 
 import { useI18n } from "vue-i18n"
 const { t } = useI18n()
@@ -64,13 +65,32 @@ const xfunItems = computed(() => {
 
 const chose = ref('Σ() + X()')
 const funLen = ref(4)
-const funChoseItems = ref([0,5,8,12,15])
-const xfunChoseItems = ref([1,2,3,10,13,14])
+const funChoseItems = ref([])
+const xfunChoseItems = ref([])
 
 function clearChoseItems(){
   funChoseItems.value=[]
   xfunChoseItems.value=[]
 }
+
+onMounted(() => {
+  const func = FUNCTION_STORE.get()
+  if (func == null) return
+
+  chose.value = func.chose
+  funLen.value = func.funLen
+  funChoseItems.value = func.funChoseItems
+  xfunChoseItems.value = func.xfunChoseItems
+})
+
+watch([chose, funLen, funChoseItems, xfunChoseItems], () => {
+  FUNCTION_STORE.set({
+    chose: chose.value,
+    funLen: funLen.value,
+    funChoseItems: funChoseItems.value,
+    xfunChoseItems: xfunChoseItems.value,
+  })
+})
 
 </script>
 
