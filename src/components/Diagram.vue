@@ -16,7 +16,7 @@ const props = defineProps({
   showFill: Boolean,
 })
 
-const colors = ref(["fuchsia", "aqua", "lime", "yellow", "red"])
+const colors = ref(["fuchsia", "red", "yellow", "lime", "aqua", "blue", "purple", "darkred", "orange", "green", "navy", "teal"])
 
 const mt = computed(() => {
   const terms = Array(props.mt.length)
@@ -92,21 +92,26 @@ const mt = computed(() => {
     <path
       v-for="path, idx in props.paths" :key="idx"
       :transform="path.t"
-      :stroke-width="path.sw"
+      :stroke-width="path.sw * rectW / 25"
       d="M0 50c-3 0 -6 -3 -6 -6v-13c0 -3 -3 -6 -6 -6c3 0 6 -3 6 -6v-13c0 -3 3 -6 6 -6"/>
-    <text class="variables" v-for="text, idx in props.texts" :key="idx" :x="text.x" :y="text.y">{{ props.variables[idx] }}</text>
+    <text class="variables" v-for="text, idx in props.texts" :key="idx" :x="text.x" :y="text.y">{{ props.variables[text.idx ?? idx] }}</text>
   </svg>
 </template>
 
 <style scoped>
 svg {
-  width: 100%;
-  max-width: 500px;
+  max-width: 35vw;
   fill: none;
   stroke: #2c3e50;
-  stroke-width: 1px;
+  stroke-width: calc(v-bind('rectW') / 25 * 1px);
   stroke-linejoin: round;
   stroke-linecap: round;
+}
+
+@media (max-width: 800px) {
+  svg {
+    max-width: none;
+  }
 }
 
 svg text {
@@ -125,17 +130,17 @@ svg .t0 {
 svg .t1,
 svg .t0,
 svg .tx {
-  font-size: 12px;
+  font-size: calc(v-bind('rectW') / 25 * 12px);
   text-anchor: middle;
 }
 
 svg .numbers {
-  font-size: 6px;
+  font-size: calc(v-bind('rectW') / 25 * 6px);
   text-anchor: end;
 }
 
 svg .variables {
-  font-size: 12px;
+  font-size: calc(v-bind('rectW') / 25 * 12px);
   text-anchor: middle;
 }
 </style>

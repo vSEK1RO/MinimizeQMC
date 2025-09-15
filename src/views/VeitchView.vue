@@ -18,6 +18,61 @@ const variables = computed(() => {
 })
 
 switch (route.query.funLen) {
+  case '5':
+    rectW.value = 12.5
+    rectH.value = 12.5
+    rects.value = [
+      { x: 87.5, y: 37.5 },
+      { x: 87.5, y: 75 },
+      { x: 87.5, y: 50 },
+      { x: 87.5, y: 62.5 },
+      { x: 50, y: 37.5 },
+      { x: 50, y: 75 },
+      { x: 50, y: 50 },
+      { x: 50, y: 62.5 },
+      { x: 75, y: 37.5 },
+      { x: 75, y: 75 },
+      { x: 75, y: 50 },
+      { x: 75, y: 62.5 },
+      { x: 62.5, y: 37.5 },
+      { x: 62.5, y: 75 },
+      { x: 62.5, y: 50 },
+      { x: 62.5, y: 62.5 },
+      { x: 0, y: 37.5 },
+      { x: 0, y: 75 },
+      { x: 0, y: 50 },
+      { x: 0, y: 62.5 },
+      { x: 37.5, y: 37.5 },
+      { x: 37.5, y: 75 },
+      { x: 37.5, y: 50 },
+      { x: 37.5, y: 62.5 },
+      { x: 12.5, y: 37.5 },
+      { x: 12.5, y: 75 },
+      { x: 12.5, y: 50 },
+      { x: 12.5, y: 62.5 },
+      { x: 25, y: 37.5 },
+      { x: 25, y: 75 },
+      { x: 25, y: 50 },
+      { x: 25, y: 62.5 },
+    ]
+    paths.value = [
+      { t: 'translate(0 62.5) scale(0.5 0.5)', sw: '2' },
+      { t: 'translate(100 75) rotate(180) scale(0.5 0.5)', sw: '2' },
+      { t: 'translate(75 37.5) scale(1 0.8) rotate(90)' },
+      { t: 'translate(12.5 87.5) rotate(270) scale(0.5 0.5)', sw: '2' },
+      { t: 'translate(62.5 87.5) rotate(270) scale(0.5 0.5)', sw: '2' },
+      { t: 'translate(50 37.5) rotate(90)' },
+    ]
+    variablesNames.value = 'X4, X3, X2, X1, X0'
+    texts.value = [
+      { x: -14, y: 77 },
+      { x: 114, y: 64 },
+      { x: 50, y: 22 },
+      { x: 25, y: 100, idx: 3 },
+      { x: 75, y: 100, idx: 3 },
+      { x: 25, y: 22, idx: 4 },
+    ]
+    break
   case '4':
     rectW.value = 25
     rectH.value = 25
@@ -103,7 +158,7 @@ const showStroke = ref(false)
       :label="t('veitch.variables')"
       v-model="variablesNames"
       />
-    <h3 v-if="route.query.funLen != '3' && route.query.funLen != '4'">
+    <h3 v-if="route.query.funLen != '3' && route.query.funLen != '4' && route.query.funLen != '5'">
       {{ t('veitch.unsupported') }}
     </h3>
     <div v-else class="diagrams">

@@ -16,7 +16,7 @@ export const messages = {
         },
         veitch: {
             variables: 'Variable names',
-            unsupported: 'Only functions with 3-4 variables are supported',
+            unsupported: 'Only functions with 3-5 variables are supported',
             show_fill: 'Show fill',
             show_stroke: 'Show stroke',
         }
@@ -38,7 +38,7 @@ export const messages = {
         },
         veitch: {
             variables: 'Имена переменных',
-            unsupported: 'Поддерживаются только функции 3-4 переменных',
+            unsupported: 'Поддерживаются только функции 3-5 переменных',
             show_fill: 'Показать заливку',
             show_stroke: 'Показать обводку',
         }
