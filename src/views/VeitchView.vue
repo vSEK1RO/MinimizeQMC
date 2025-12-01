@@ -65,12 +65,12 @@ switch (route.query.funLen) {
     ]
     variablesNames.value = 'X4, X3, X2, X1, X0'
     texts.value = [
-      { x: -14, y: 77 },
-      { x: 114, y: 64 },
-      { x: 50, y: 22 },
-      { x: 25, y: 100, idx: 3 },
-      { x: 75, y: 100, idx: 3 },
-      { x: 25, y: 22, idx: 4 },
+      { x: 25, y: 22, idx: 0 },
+      { x: 75, y: 100, idx: 1 },
+      { x: 25, y: 100, idx: 1 },
+      { x: 50, y: 22, idx: 2 },
+      { x: 114, y: 64, idx: 3 },
+      { x: -14, y: 77, idx: 4 },
     ]
     break
   case '4':
